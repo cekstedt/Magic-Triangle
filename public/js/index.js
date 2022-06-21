@@ -18,7 +18,7 @@ const order = 4;
 const radius = 60;
 const lineBetween = 40;
 const buffer = 20;
-const numbers = [1, 0, 0, 4, 0, 0, 7, 0, 0];
+const numbers = [0, 4, 0, 0, 2, 0, 0, 5, 0];
 
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
 const boxWidth = triangleSide + 2 * (radius + buffer);
@@ -41,11 +41,11 @@ const points = [{
 
 // Draw lines
 const line1 = draw.line(points[0].x, points[0].y, points[1].x, points[1].y)
-  .stroke({ width: 1, color: "black" });
+  .stroke({ width: 3, color: "black" });
 const line2 = draw.line(points[1].x, points[1].y, points[2].x, points[2].y)
-  .stroke({ width: 1, color: "black" });
+  .stroke({ width: 3, color: "black" });
 const line3 = draw.line(points[2].x, points[2].y, points[0].x, points[0].y)
-  .stroke({ width: 1, color: "black" });
+  .stroke({ width: 3, color: "black" });
 
 // Draw Circles
 const circles = [];
@@ -70,7 +70,7 @@ for (circle of circles) {
     r: circle.radius,
     stroke: "black",
     "stroke-width": "3px",
-    fill: "white"
+    fill: "#DEDEDE"
   }
   circle.draw = draw.circle(options);
 }
