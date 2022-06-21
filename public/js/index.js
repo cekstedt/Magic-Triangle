@@ -19,6 +19,7 @@ const radius = 60;
 const lineBetween = 40;
 const buffer = 20;
 const numbers = [0, 4, 0, 0, 2, 0, 0, 5, 0];
+const sum = 21;
 
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
 const boxWidth = triangleSide + 2 * (radius + buffer);
@@ -93,6 +94,21 @@ for (circle of circles) {
     });
   }
 }
+
+// Optional sum text in center.
+
+if (sum) {
+  draw.text("" + sum)
+    .attr({
+      x: Math.round((points[0].x + points[1].x + points[2].x) / 3),
+      y: Math.round((points[0].y + points[1].y + points[2].y) / 3),
+      "dominant-baseline": "middle",
+      "text-anchor": "middle",
+      "font-size": radius + "px",
+      "font-family": "sans-serif"
+    });
+}
+
 
 // Helper Functions.
 
