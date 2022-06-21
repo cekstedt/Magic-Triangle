@@ -4,13 +4,17 @@ const radius = 60;
 const lineBetween = 40;
 const buffer = 20;
 const numbers = [0, 4, 0, 0, 2, 0, 0, 5, 0];
-const sum = 23;
+let sum;
 
 // Determine box size.
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
 const boxWidth = triangleSide + 2 * (radius + buffer);
 const boxHeight = Math.round(triangleSide * Math.sqrt(3) * 0.5) + 2 * (radius + buffer);
-const draw = SVG().addTo("#svg-wrapper").size(boxWidth, boxHeight);
+const draw = SVG().addTo("#svg-wrapper")
+  .size(boxWidth, boxHeight);
+
+draw.viewbox(0, 0, boxWidth, boxHeight)
+  .attr("style", "height: 200px; width: auto");
 
 // Determine points of the equilateral triangle.
 const points = [{
@@ -35,7 +39,7 @@ const pointsPath = [
 // Draw lines
 for ([pt1, pt2] of pointsPath) {
   const line1 = draw.line(pt1.x, pt1.y, pt2.x, pt2.y)
-    .stroke({ width: 3, color: "black" });
+    .stroke({ width: 5, color: "grey" });
 }
 
 // Create Circles
@@ -67,7 +71,8 @@ if (sum) {
     "dominant-baseline": "middle",
     "text-anchor": "middle",
     "font-size": radius + "px",
-    "font-family": "sans-serif"
+    "font-family": "sans-serif",
+    "font-weight": "bold"
   };
   draw.text("" + sum).attr(textOptions);
 }
@@ -87,9 +92,9 @@ function Circle({ x, y, radius, text }) {
       cx: this.x,
       cy: this.y,
       r: this.radius,
-      stroke: "black",
-      "stroke-width": "3px",
-      fill: "#DEDEDE"
+      stroke: "grey",
+      "stroke-width": "5px",
+      fill: "LightGray"
     }
     draw.circle(options);
 
@@ -97,11 +102,12 @@ function Circle({ x, y, radius, text }) {
     if (this.text) {
       const textOptions = {
         x: this.x,
-        y: this.y,
+        y: Math.round(this.y + radius / 4),
         "dominant-baseline": "middle",
         "text-anchor": "middle",
         "font-size": this.radius + "px",
-        "font-family": "sans-serif"
+        "font-family": "sans-serif",
+        "font-weight": "bold"
       };
       const text = draw.text("" + circle.text).attr(textOptions);
     }
