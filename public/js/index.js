@@ -1,31 +1,18 @@
-// // initialize SVG.js
-// const width = 500;
-// const height = 500;
-// const draw = SVG().addTo("#svg-wrapper").size(width, height);
-//
-// const options = {
-//   cx: "150",
-//   cy: "150",
-//   r: "30",
-//   stroke: "black",
-//   "stroke-width": "3px",
-//   fill: "white"
-// }
-// const circle = draw.circle(options);
-
-// Determine box size (buffer, circles, lines, height of eq triangle)
+// Numbers to alter to change the output of the svg.
 const order = 4;
 const radius = 60;
 const lineBetween = 40;
 const buffer = 20;
 const numbers = [0, 4, 0, 0, 2, 0, 0, 5, 0];
-const sum = 21;
+const sum = 23;
 
+// Determine box size.
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
 const boxWidth = triangleSide + 2 * (radius + buffer);
 const boxHeight = Math.round(triangleSide * Math.sqrt(3) * 0.5) + 2 * (radius + buffer);
-
 const draw = SVG().addTo("#svg-wrapper").size(boxWidth, boxHeight);
+
+// Determine points of the equilateral triangle.
 const points = [{
     x: Math.round(boxWidth / 2),
     y: buffer + radius
@@ -39,29 +26,26 @@ const points = [{
     y: boxHeight - buffer - radius
   }
 ];
+const pointsPath = [
+  [points[0], points[1]],
+  [points[1], points[2]],
+  [points[2], points[0]]
+];
 
 // Draw lines
-const line1 = draw.line(points[0].x, points[0].y, points[1].x, points[1].y)
-  .stroke({ width: 3, color: "black" });
-const line2 = draw.line(points[1].x, points[1].y, points[2].x, points[2].y)
-  .stroke({ width: 3, color: "black" });
-const line3 = draw.line(points[2].x, points[2].y, points[0].x, points[0].y)
-  .stroke({ width: 3, color: "black" });
+for ([pt1, pt2] of pointsPath) {
+  const line1 = draw.line(pt1.x, pt1.y, pt2.x, pt2.y)
+    .stroke({ width: 3, color: "black" });
+}
 
 // Draw Circles
 const circles = [];
 
-circles.push(new Circle(points[0].x, points[0].y, radius));
-for (pt of pointsBetween(points[0], points[1], order - 2)) {
-  circles.push(new Circle(pt.x, pt.y, radius));
-}
-circles.push(new Circle(points[1].x, points[1].y, radius));
-for (pt of pointsBetween(points[1], points[2], order - 2)) {
-  circles.push(new Circle(pt.x, pt.y, radius));
-}
-circles.push(new Circle(points[2].x, points[2].y, radius));
-for (pt of pointsBetween(points[2], points[0], order - 2)) {
-  circles.push(new Circle(pt.x, pt.y, radius));
+for ([pt1, pt2] of pointsPath) {
+  circles.push(new Circle({ x: pt1.x, y: pt1.y, radius: radius }));
+  for (pt of pointsBetween(pt1, pt2, order - 2)) {
+    circles.push(new Circle({ x: pt.x, y: pt.y, radius: radius }));
+  }
 }
 
 for (circle of circles) {
@@ -112,7 +96,7 @@ if (sum) {
 
 // Helper Functions.
 
-function Circle(x, y, radius) {
+function Circle({ x, y, radius }) {
   this.x = x;
   this.y = y;
   this.radius = radius;
@@ -131,7 +115,6 @@ function pointsBetween(pt1, pt2, numPts) {
   }
   return result;
 }
-
 
 function downloadSVGAsText() {
   // Get the element of type "svg".
