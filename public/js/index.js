@@ -38,7 +38,7 @@ for ([pt1, pt2] of pointsPath) {
     .stroke({ width: 3, color: "black" });
 }
 
-// Draw Circles
+// Create Circles
 const circles = [];
 
 for ([pt1, pt2] of pointsPath) {
@@ -48,58 +48,64 @@ for ([pt1, pt2] of pointsPath) {
   }
 }
 
-for (circle of circles) {
-  const options = {
-    cx: circle.x,
-    cy: circle.y,
-    r: circle.radius,
-    stroke: "black",
-    "stroke-width": "3px",
-    fill: "#DEDEDE"
-  }
-  circle.draw = draw.circle(options);
-}
-
-// Draw Text
+// Add text
 for (let i = 0; i < numbers.length; i++) {
   circles[i].text = numbers[i];
 }
 
+// Draw Circles
 for (circle of circles) {
-  if (circle.text) {
-    let text = draw.text("" + circle.text);
-    text.attr({
-      x: circle.x,
-      y: circle.y,
-      "dominant-baseline": "middle",
-      "text-anchor": "middle",
-      "font-size": circle.radius + "px",
-      "font-family": "sans-serif"
-    });
-  }
+  circle.draw();
 }
 
 // Optional sum text in center.
 
 if (sum) {
-  draw.text("" + sum)
-    .attr({
-      x: Math.round((points[0].x + points[1].x + points[2].x) / 3),
-      y: Math.round((points[0].y + points[1].y + points[2].y) / 3),
-      "dominant-baseline": "middle",
-      "text-anchor": "middle",
-      "font-size": radius + "px",
-      "font-family": "sans-serif"
-    });
+  const textOptions = {
+    x: Math.round((points[0].x + points[1].x + points[2].x) / 3),
+    y: Math.round((points[0].y + points[1].y + points[2].y) / 3),
+    "dominant-baseline": "middle",
+    "text-anchor": "middle",
+    "font-size": radius + "px",
+    "font-family": "sans-serif"
+  };
+  draw.text("" + sum).attr(textOptions);
 }
 
 
 // Helper Functions.
 
-function Circle({ x, y, radius }) {
+function Circle({ x, y, radius, text }) {
   this.x = x;
   this.y = y;
   this.radius = radius;
+  this.text = text || 0;
+
+  this.draw = function() {
+    // Draw circle
+    const options = {
+      cx: this.x,
+      cy: this.y,
+      r: this.radius,
+      stroke: "black",
+      "stroke-width": "3px",
+      fill: "#DEDEDE"
+    }
+    draw.circle(options);
+
+    // Draw inner text
+    if (this.text) {
+      const textOptions = {
+        x: this.x,
+        y: this.y,
+        "dominant-baseline": "middle",
+        "text-anchor": "middle",
+        "font-size": this.radius + "px",
+        "font-family": "sans-serif"
+      };
+      const text = draw.text("" + circle.text).attr(textOptions);
+    }
+  }
 }
 
 function pointsBetween(pt1, pt2, numPts) {
