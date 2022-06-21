@@ -1,8 +1,18 @@
 // initialize SVG.js
-var draw = SVG().addTo('body');
+const width = 500;
+const height = 500;
+const draw = SVG().addTo("#svg-wrapper").size(width, height);
 
-// draw pink square
-draw.rect(100, 100).move(100, 50).fill('#f06');
+const options = {
+  cx: "150",
+  cy: "150",
+  r: "50",
+  stroke: "black",
+  "stroke-width": "3px",
+  fill: "white"
+}
+const circle = draw.circle(options);
+
 
 
 
