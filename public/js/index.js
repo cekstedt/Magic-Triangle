@@ -15,10 +15,10 @@
 
 // Determine box size (buffer, circles, lines, height of eq triangle)
 const order = 4;
-const radius = 30;
-const lineBetween = 20;
-const buffer = 10;
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const radius = 60;
+const lineBetween = 40;
+const buffer = 20;
+const numbers = [1, 0, 0, 4, 0, 0, 7, 0, 0];
 
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
 const boxWidth = triangleSide + 2 * (radius + buffer);
@@ -26,16 +26,16 @@ const boxHeight = Math.round(triangleSide * Math.sqrt(3) * 0.5) + 2 * (radius + 
 
 const draw = SVG().addTo("#svg-wrapper").size(boxWidth, boxHeight);
 const points = [{
-    x: buffer + radius,
-    y: boxHeight - buffer - radius
+    x: Math.round(boxWidth / 2),
+    y: buffer + radius
   },
   {
     x: boxWidth - buffer - radius,
     y: boxHeight - buffer - radius
   },
   {
-    x: Math.round(boxWidth / 2),
-    y: buffer + radius
+    x: buffer + radius,
+    y: boxHeight - buffer - radius
   }
 ];
 
@@ -76,9 +76,25 @@ for (circle of circles) {
 }
 
 // Draw Text
+for (let i = 0; i < numbers.length; i++) {
+  circles[i].text = numbers[i];
+}
 
+for (circle of circles) {
+  if (circle.text) {
+    let text = draw.text("" + circle.text);
+    text.attr({
+      x: circle.x,
+      y: circle.y,
+      "dominant-baseline": "middle",
+      "text-anchor": "middle",
+      "font-size": circle.radius + "px",
+      "font-family": "sans-serif"
+    });
+  }
+}
 
-
+// Helper Functions.
 
 function Circle(x, y, radius) {
   this.x = x;
