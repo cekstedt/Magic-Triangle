@@ -124,11 +124,30 @@ function pointsBetween(pt1, pt2, numPts) {
 }
 
 function downloadSVGAsText() {
-  // Get the element of type "svg".
-  const svg = document.querySelector('svg');
+
+  function cssToString(styleSheet) {
+    return [...styleSheet.cssRules].map(rule => rule.cssText).join('');
+  }
+
+  function getStyleSheet(unique_href) {
+    for (const sheet of document.styleSheets) {
+      if (sheet.href.endsWith(unique_href)) {
+        return sheet;
+      }
+    }
+  }
+
+  // Get the element of type "svg", and create an unattached clone.
+  const svgElement = document.querySelector('svg').cloneNode(true);
+
+  // Append a new style block containing style rules taken from "css/svg_styles.css".
+  const cssElement = document.createElement("style");
+  const svgCSSText = cssToString(getStyleSheet("css/svg_styles.css"));
+  cssElement.appendChild(document.createTextNode(svgCSSText));
+  svgElement.appendChild(cssElement);
 
   // Render the svg xml text as base64.
-  const base64doc = btoa(unescape(encodeURIComponent(svg.outerHTML)));
+  const base64doc = btoa(unescape(encodeURIComponent(svgElement.outerHTML)));
 
   // Create a new, unattached anchor tag.
   const a = document.createElement('a');
