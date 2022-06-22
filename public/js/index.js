@@ -85,6 +85,11 @@ function Circle({ x, y, radius, text }) {
   this.y = y;
   this.radius = radius;
   this.text = text || 0;
+  this.textOffset = {
+    x: 0,
+    y: Math.round(this.radius / 4),
+    scale: 1
+  };
 
   this.draw = function() {
     // Draw circle
@@ -101,11 +106,11 @@ function Circle({ x, y, radius, text }) {
     // Draw inner text
     if (this.text) {
       const textOptions = {
-        x: this.x,
-        y: Math.round(this.y + radius / 4),
+        x: this.x + this.textOffset.x,
+        y: this.y + this.textOffset.y,
         "dominant-baseline": "middle",
         "text-anchor": "middle",
-        "font-size": this.radius + "px",
+        "font-size": (this.radius * this.textOffset.scale) + "px",
         "font-family": "sans-serif",
         "font-weight": "bold"
       };
