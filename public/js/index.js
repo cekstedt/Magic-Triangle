@@ -4,7 +4,7 @@ const radius = 60;
 const lineBetween = 40;
 const buffer = 20;
 const numbers = [0, 4, 0, 0, 2, 0, 0, 5, 0];
-let sum;
+let sum = 23;
 
 // Determine box size.
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
@@ -13,8 +13,7 @@ const boxHeight = Math.round(triangleSide * Math.sqrt(3) * 0.5) + 2 * (radius + 
 const draw = SVG().addTo("#svg-wrapper")
   .size(boxWidth, boxHeight);
 
-draw.viewbox(0, 0, boxWidth, boxHeight)
-  .attr("style", "height: 200px; width: auto");
+draw.viewbox(0, 0, boxWidth, boxHeight);
 
 // Determine points of the equilateral triangle.
 const points = [{
@@ -38,8 +37,7 @@ const pointsPath = [
 
 // Draw lines
 for ([pt1, pt2] of pointsPath) {
-  const line1 = draw.line(pt1.x, pt1.y, pt2.x, pt2.y)
-    .stroke({ width: 5, color: "grey" });
+  const line1 = draw.line(pt1.x, pt1.y, pt2.x, pt2.y).addClass("line");
 }
 
 // Create Circles
@@ -68,11 +66,8 @@ if (sum) {
   const textOptions = {
     x: Math.round((points[0].x + points[1].x + points[2].x) / 3),
     y: Math.round((points[0].y + points[1].y + points[2].y) / 3),
-    "dominant-baseline": "middle",
-    "text-anchor": "middle",
+    class: "text",
     "font-size": radius + "px",
-    "font-family": "sans-serif",
-    "font-weight": "bold"
   };
   draw.text("" + sum).attr(textOptions);
 }
@@ -87,7 +82,7 @@ function Circle({ x, y, radius, text }) {
   this.text = text || 0;
   this.textOffset = {
     x: 0,
-    y: Math.round(this.radius / 4),
+    y: 0, // Math.round(this.radius / 4),
     scale: 1
   };
 
@@ -97,9 +92,7 @@ function Circle({ x, y, radius, text }) {
       cx: this.x,
       cy: this.y,
       r: this.radius,
-      stroke: "grey",
-      "stroke-width": "5px",
-      fill: "LightGray"
+      class: "circle"
     }
     draw.circle(options);
 
@@ -108,11 +101,8 @@ function Circle({ x, y, radius, text }) {
       const textOptions = {
         x: this.x + this.textOffset.x,
         y: this.y + this.textOffset.y,
-        "dominant-baseline": "middle",
-        "text-anchor": "middle",
+        class: "text",
         "font-size": (this.radius * this.textOffset.scale) + "px",
-        "font-family": "sans-serif",
-        "font-weight": "bold"
       };
       const text = draw.text("" + circle.text).attr(textOptions);
     }
