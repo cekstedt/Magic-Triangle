@@ -15,7 +15,7 @@ const radius = 60;
 const lineBetween = 40;
 const buffer = 20;
 const numbers = [0, 4, 0, 0, 2, 0, 0, 5, 0];
-let sum = 23;
+const sum = 23;
 
 // Determine box size.
 const triangleSide = (order - 1) * (radius * 2 + lineBetween);
@@ -50,16 +50,16 @@ const pointsPath = [
 ];
 
 // Draw lines
-for (let [pt1, pt2] of pointsPath) {
+for (const [pt1, pt2] of pointsPath) {
   const line1 = draw.line(pt1.x, pt1.y, pt2.x, pt2.y).addClass("line");
 }
 
 // Create Circles
 const circles = [];
 
-for (let [pt1, pt2] of pointsPath) {
+for (const [pt1, pt2] of pointsPath) {
   circles.push(new Circle({ x: pt1.x, y: pt1.y, radius: radius }));
-  for (let pt of pointsBetween(pt1, pt2, order - 2)) {
+  for (const pt of pointsBetween(pt1, pt2, order - 2)) {
     circles.push(new Circle({ x: pt.x, y: pt.y, radius: radius }));
   }
 }
@@ -70,7 +70,7 @@ for (let i = 0; i < numbers.length; i++) {
 }
 
 // Draw Circles
-for (let circle of circles) {
+for (const circle of circles) {
   circle.draw();
 }
 
