@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/material": "^5.8.7",
     "@svgdotjs/svg.js": "^3.1.2",
     "@svgr/webpack": "^6.2.1",
     "body-parser": "^1.20.0",
